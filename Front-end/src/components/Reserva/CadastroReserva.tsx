@@ -130,7 +130,6 @@ const CadastroReserva: React.FC<CadastroReservaProps> = ({ onSuccess }) => {
       };
 
       await api.post('/api/Reserva/CriarReserva', reservaPayload);
-      setAlertMessage('Reserva finalizada com sucesso');
       setAlertType('success');
       onSuccess();
       setCarroReservar('');
