@@ -41,6 +41,10 @@ namespace AluguelCarros.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("Placa")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<bool>("Status")
                         .HasColumnType("bit");
 

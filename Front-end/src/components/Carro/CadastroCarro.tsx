@@ -3,13 +3,14 @@ import CarroModel from '../../Interfaces/Carro';
 import api from '../../services/api';
 
 interface CadastroCarroProps {
-  onSuccess: () => void;
+  onSuccess: (message: string, type: 'success' | 'danger') => void;
 }
 
 const CadastroCarro: React.FC<CadastroCarroProps> = ({ onSuccess }) => {
   const [carro, setCarro] = useState<Omit<CarroModel, 'id'>>({
     marca: '',
     modelo: '',
+    placa: '',
     ano: new Date().getFullYear(),
     valorDiaria: 0,
     status: true
@@ -35,13 +36,15 @@ const CadastroCarro: React.FC<CadastroCarroProps> = ({ onSuccess }) => {
       setCarro({
         marca: '',
         modelo: '',
+        placa: '',
         ano: new Date().getFullYear(),
         valorDiaria: 0,
         status: true
       });
-      onSuccess(); // Chama a função de callback após o sucesso do cadastro
+      onSuccess('Carro cadastrado com sucesso!', 'success'); 
     } catch (error) {
       console.error('Erro ao cadastrar carro:', error);
+      onSuccess('Carro com placa ja cadastrado no sistema.', 'danger'); 
     }
   };
 
@@ -61,7 +64,7 @@ const CadastroCarro: React.FC<CadastroCarroProps> = ({ onSuccess }) => {
               required
             />
           </div>
-          <div className='w-100'>
+          <div className='w-100 mr-5'>
             <label htmlFor="modelo">Modelo</label>
             <input
               type="text"
@@ -69,6 +72,18 @@ const CadastroCarro: React.FC<CadastroCarroProps> = ({ onSuccess }) => {
               name="modelo"
               className="form-control"
               value={carro.modelo}
+              onChange={handleChange}
+              required
+            />
+          </div>
+          <div className='w-100'>
+            <label htmlFor="placa">Placa</label>
+            <input
+              type="text"
+              id="placa"
+              name="placa"
+              className="form-control"
+              value={carro.placa}
               onChange={handleChange}
               required
             />
@@ -105,11 +120,9 @@ const CadastroCarro: React.FC<CadastroCarroProps> = ({ onSuccess }) => {
           </div>
           <div><button type="submit" className="btn btn-primary">Cadastrar</button></div>
         </div>
-
       </form>
     </div>
   );
 };
-
 
 export default CadastroCarro;

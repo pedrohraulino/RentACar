@@ -62,6 +62,7 @@ const Home: React.FC = () => {
                 <th scope="col">Contato</th>
                 <th scope="col">CNH</th>
                 <th scope="col">Carro</th>
+                <th scope="col">Placa</th>
                 <th scope="col">Ano</th>
                 <th scope="col">Valor da Reserva</th>
                 <th scope="col">Data Início</th>
@@ -75,6 +76,7 @@ const Home: React.FC = () => {
                   <td>{reserva.cliente.contato}</td>
                   <td>{reserva.cliente.cnh}</td>
                   <td>{reserva.carro.marca} {reserva.carro.modelo}</td>
+                  <td>{reserva.carro.placa}</td>
                   <td>{reserva.carro.ano}</td>
                   <td>{`R$ ${reserva.valorReserva.toFixed(2)}`}</td>
                   <td>{formatDate(reserva.dataInicio)}</td>

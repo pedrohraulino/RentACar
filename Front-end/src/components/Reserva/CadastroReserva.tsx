@@ -180,7 +180,7 @@ const CadastroReserva: React.FC<CadastroReservaProps> = ({ onSuccess }) => {
             autoComplete="off"
           />
           {showCarroResultados && carroReservar && (
-            <ul id="resultadosBusca">
+            <ul className="resultadosBusca">
               {carros.filter(carro => carro.marca.toLowerCase().includes(carroReservar.toLowerCase())).map(filteredCarro => (
                 <li key={filteredCarro.id} onClick={() => handleCarroSelect(filteredCarro)}>
                   {filteredCarro.marca} - {filteredCarro.modelo}
@@ -237,7 +237,7 @@ const CadastroReserva: React.FC<CadastroReservaProps> = ({ onSuccess }) => {
             autoComplete="off"
           />
           {showClienteResultados && clienteReservarNome && (
-            <ul id="resultadosBuscaClientes">
+            <ul className="resultadosBusca">
               {clientes.filter(cliente => cliente.nome.toLowerCase().includes(clienteReservarNome.toLowerCase())).map(filteredCliente => (
                 <li key={filteredCliente.id} onClick={() => handleClienteSelect(filteredCliente)}>
                   {filteredCliente.nome} - {filteredCliente.contato}

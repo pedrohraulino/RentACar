@@ -83,6 +83,16 @@ const EditarCarro: React.FC<EditarCarroProps> = ({ show, onClose, onSave, carro 
                 />
               </div>
               <div className="form-group">
+                <label>Placa</label>
+                <input
+                  type="text"
+                  name="placa"
+                  className="form-control"
+                  value={localCarro?.placa || ''}
+                  onChange={handleChange}
+                />
+              </div>
+              <div className="form-group">
                 <label>Valor Diária</label>
                 <input
                   type="number"

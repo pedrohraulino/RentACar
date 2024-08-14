@@ -3,7 +3,7 @@ import ClienteModel from '../../Interfaces/Cliente';
 import api from '../../services/api';
 
 interface CadastroClienteProps {
-  onSuccess: () => void;
+  onSuccess: (message: string, type: 'success' | 'danger') => void;
 }
 
 const CadastroCliente: React.FC<CadastroClienteProps> = ({ onSuccess }) => {
@@ -17,7 +17,7 @@ const CadastroCliente: React.FC<CadastroClienteProps> = ({ onSuccess }) => {
     const { name, value } = e.target;
     setCliente((prevCliente) => ({
       ...prevCliente,
-      [name]: name === 'ano' || name === 'valorDiaria' ? parseFloat(value) || 0 : value
+      [name]: value
     }));
   };
 
@@ -35,9 +35,10 @@ const CadastroCliente: React.FC<CadastroClienteProps> = ({ onSuccess }) => {
         contato: '',
         cnh: ''
       });
-      onSuccess();
+      onSuccess('Cliente cadastrado com sucesso!', 'success');
     } catch (error) {
       console.error('Erro ao cadastrar Cliente:', error);
+      onSuccess('Cliente  com CNH já cadastrado!', 'danger');
     }
   };
 
@@ -58,9 +59,9 @@ const CadastroCliente: React.FC<CadastroClienteProps> = ({ onSuccess }) => {
             />
           </div>
           <div className='w-100 mr-5'>
-            <label htmlFor="contato">Cotatao</label>
+            <label htmlFor="contato">Contato</label>
             <input
-              type="number"
+              type="text"
               id="contato"
               name="contato"
               className="form-control"
@@ -72,7 +73,7 @@ const CadastroCliente: React.FC<CadastroClienteProps> = ({ onSuccess }) => {
           <div className='w-100 mr-5'>
             <label htmlFor="cnh">CNH</label>
             <input
-              type="number"
+              type="text"
               id="cnh"
               name="cnh"
               className="form-control"
@@ -81,12 +82,13 @@ const CadastroCliente: React.FC<CadastroClienteProps> = ({ onSuccess }) => {
               required
             />
           </div>
-          <div><button type="submit" className="btn btn-primary">Cadastrar</button></div>
+          <div>
+            <button type="submit" className="btn btn-primary">Cadastrar</button>
+          </div>
         </div>
       </form>
     </div>
   );
 };
-
 
 export default CadastroCliente;

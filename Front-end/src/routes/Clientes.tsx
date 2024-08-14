@@ -55,17 +55,17 @@ const Clientes: React.FC = () => {
     setPaginaAtual(pageNumber);
   };
 
-  const handleCadastroSuccess = () => {
-    fetchClientes();
-    setAlertMessage('Cliente cadastrado com sucesso!');
-    setAlertType('success');
+  const handleCadastro = (message: string, type: 'success' | 'danger') => {
+    setAlertMessage(message);
+    setAlertType(type);
+    fetchClientes();  
     setShowForm(false);
   };
 
-  const handleDeleteSuccess = () => {
-    fetchClientes();
-    setAlertMessage('Cliente excluído com sucesso!');
-    setAlertType('success');
+  const handleDelete = (message: string, type: 'success' | 'danger') => {
+    setAlertMessage(message);
+    setAlertType(type);
+    fetchClientes();  
   };
 
   const handleEditClick = (cliente: ClienteModel) => {
@@ -86,7 +86,7 @@ const Clientes: React.FC = () => {
       setShowEditModal(false);
     } catch (error) {
       console.error('Erro ao atualizar cliente:', error);
-      setAlertMessage('Erro ao atualizar cliente!');
+      setAlertMessage('Cliente com CNH já cadastrado');
       setAlertType('danger');
     }
   };
@@ -123,7 +123,7 @@ const Clientes: React.FC = () => {
 
           <Collapse in={showForm}>
             <div id="cadastro-cliente-collapse">
-              <CadastroCliente onSuccess={handleCadastroSuccess} />
+              <CadastroCliente onSuccess={handleCadastro} />
             </div>
           </Collapse>
 
@@ -151,7 +151,7 @@ const Clientes: React.FC = () => {
                     </button>
                     <DeletarCliente
                       id={cliente.id}
-                      onDeleteSuccess={handleDeleteSuccess}
+                      onDelete={handleDelete}
                     />
                   </td>
                 </tr>

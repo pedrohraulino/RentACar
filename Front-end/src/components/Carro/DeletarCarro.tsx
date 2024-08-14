@@ -4,16 +4,17 @@ import api from '../../services/api';
 interface DeletarCarroProps {
   id: number;
   status: boolean;
-  onDeleteSuccess: () => void;
+  onDelete: (message: string, type: 'success' | 'danger') => void;
 }
 
-const DeletarCarro: React.FC<DeletarCarroProps> = ({ id, status, onDeleteSuccess }) => {
+const DeletarCarro: React.FC<DeletarCarroProps> = ({ id, status, onDelete }) => {
   const [loading, setLoading] = useState<boolean>(false);
 
   const handleDelete = async () => {
     setLoading(true);
     if (!status) {
       setLoading(false);
+      onDelete('Carro não pode ser excluído porque está possui reserva.', 'danger');
       return;
     }
 
@@ -23,9 +24,10 @@ const DeletarCarro: React.FC<DeletarCarroProps> = ({ id, status, onDeleteSuccess
           carroId: id
         }
       });
-      onDeleteSuccess();
+      onDelete('Carro excluído com sucesso!', 'success');
     } catch (error) {
       console.error('Erro ao deletar carro:', error);
+      onDelete('Erro ao tentar excluir o carro.', 'danger');
     } finally {
       setLoading(false);
     }

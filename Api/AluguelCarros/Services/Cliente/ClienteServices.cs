@@ -63,17 +63,29 @@ namespace SistemaAluguelCarros.Services.Cliente
             ResponseModel<List<ClienteModel>> resposta = new ResponseModel<List<ClienteModel>>();
             try
             {
+                bool cnhExiste = await _context.Cliente
+                    .AsNoTracking()
+                    .AnyAsync(c => c.CNH == criarClienteDto.CNH);
+
+                if (cnhExiste)
+                {
+                    resposta.Mensagem = "Já existe um cliente com a CNH informada.";
+                    resposta.Status = false;
+                    return resposta;
+                }
+
                 var cliente = new ClienteModel()
                 {
                     Nome = criarClienteDto.Nome,
                     Contato = criarClienteDto.Contato,
                     CNH = criarClienteDto.CNH,
                 };
+
                 _context.Add(cliente);
                 await _context.SaveChangesAsync();
 
                 resposta.Dados = await _context.Cliente.ToListAsync();
-                resposta.Mensagem = "Autor Criado com Sucesso";
+                resposta.Mensagem = "Cliente Criado com Sucesso";
                 return resposta;
             }
             catch (Exception ex)
@@ -83,7 +95,6 @@ namespace SistemaAluguelCarros.Services.Cliente
                 return resposta;
             }
         }
-
         public async Task<ResponseModel<List<ClienteModel>>> EditarCliente(EditarClienteDto editarClienteDto)
         {
             ResponseModel<List<ClienteModel>> resposta = new ResponseModel<List<ClienteModel>>();
@@ -92,25 +103,39 @@ namespace SistemaAluguelCarros.Services.Cliente
                 var cliente = await _context.Cliente.FirstOrDefaultAsync(clienteBanco => clienteBanco.Id == editarClienteDto.Id);
                 if (cliente == null)
                 {
-                    resposta.Mensagem = "Nenhum cliente Localizado";
+                    resposta.Mensagem = "Nenhum cliente localizado com o ID fornecido.";
+                    resposta.Status = false;
+                    return resposta;
+                }
+
+                bool cnhExiste = await _context.Cliente
+                    .AsNoTracking()
+                    .AnyAsync(c => c.CNH == editarClienteDto.CNH && c.Id != editarClienteDto.Id);
+
+                if (cnhExiste)
+                {
+                    resposta.Mensagem = "Já existe um cliente com a CNH informada.";
+                    resposta.Status = false;
                     return resposta;
                 }
 
                 cliente.Nome = editarClienteDto.Nome;
                 cliente.Contato = editarClienteDto.Contato;
                 cliente.CNH = editarClienteDto.CNH;
+
                 _context.Update(cliente);
                 await _context.SaveChangesAsync();
+
                 resposta.Dados = await _context.Cliente.ToListAsync();
-                resposta.Mensagem = "Dados Atualizados";
+                resposta.Mensagem = "Dados Atualizados com Sucesso";
                 return resposta;
             }
             catch (Exception ex)
             {
                 resposta.Mensagem = ex.Message;
                 resposta.Status = false;
+                return resposta;
             }
-            return resposta;
         }
 
         public async Task<ResponseModel<List<ClienteModel>>> RemoverCliente(int clienteId)

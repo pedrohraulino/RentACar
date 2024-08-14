@@ -12,7 +12,7 @@ using SistemaAluguelCarros.Data;
 namespace AluguelCarros.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20240813134427_SistemaAluguelCarros")]
+    [Migration("20240814105829_SistemaAluguelCarros")]
     partial class SistemaAluguelCarros
     {
         /// <inheritdoc />
@@ -41,6 +41,10 @@ namespace AluguelCarros.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Modelo")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Placa")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 

@@ -19,6 +19,7 @@ namespace AluguelCarros.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Modelo = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Marca = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Placa = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Ano = table.Column<int>(type: "int", nullable: false),
                     ValorDiaria = table.Column<float>(type: "real", nullable: false),
                     Status = table.Column<bool>(type: "bit", nullable: false)

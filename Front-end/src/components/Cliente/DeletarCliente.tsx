@@ -3,10 +3,10 @@ import api from '../../services/api';
 
 interface DeletarclienteProps {
   id: number;
-  onDeleteSuccess: () => void;
+  onDelete: (message: string, type: 'success' | 'danger') => void;
 }
 
-const Deletarcliente: React.FC<DeletarclienteProps> = ({ id, onDeleteSuccess }) => {
+const Deletarcliente: React.FC<DeletarclienteProps> = ({ id, onDelete }) => {
   const [loading, setLoading] = useState<boolean>(false);
 
   const handleDelete = async () => {
@@ -18,9 +18,10 @@ const Deletarcliente: React.FC<DeletarclienteProps> = ({ id, onDeleteSuccess }) 
           clienteId: id
         }
       });
-      onDeleteSuccess();
+      onDelete('Cliente excluído com sucesso!', 'success');
     } catch (error) {
       console.error('Erro ao deletar cliente:', error);
+      onDelete('Cliente não pode ser excluído porque está possui reserva.', 'danger');
     } finally {
       setLoading(false);
     }

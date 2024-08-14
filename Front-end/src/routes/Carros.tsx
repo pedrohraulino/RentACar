@@ -78,7 +78,7 @@ const Carro: React.FC = () => {
       setAlertType('success');
     } catch (error) {
       console.error('Erro ao salvar carro:', error);
-      setAlertMessage('Erro ao atualizar carro.');
+      setAlertMessage('Já existe um Carro com essa placa');
       setAlertType('danger');
     }
   };
@@ -88,23 +88,27 @@ const Carro: React.FC = () => {
     setShowModal(true);
   };
 
-  const handleDeleteSuccess = async () => {
-    fetchCarros();
-    setAlertMessage('Carro excluído com sucesso!');
-    setAlertType('success');
+  const handleDelete = (message: string, type: 'success' | 'danger') => {
+    setAlertMessage(message);
+    setAlertType(type);
+    if (type === 'success') {
+      fetchCarros();
+    }
   };
 
-  const handleCadastroSuccess = async () => {
-    fetchCarros();
-    setAlertMessage('Carro cadastrado com sucesso!');
-    setAlertType('success');
+  const handleCadastro = (message: string, type: 'success' | 'danger') => {
+    setAlertMessage(message);
+    setAlertType(type);
+    if (type === 'success') {
+      fetchCarros();
+    }
   };
 
   return (
     <div className="w-100 pl-5">
       <section id="home" className="shadow-lg telas p-5">
         <div className="ultimasReservas">
-          <h1>Todos os Carros</h1>
+          <h5>Todos os Carros</h5>
           <EditarCarro
             show={showModal}
             onClose={handleClose}
@@ -135,7 +139,7 @@ const Carro: React.FC = () => {
           </div>
           <Collapse in={showForm}>
             <div>
-              <CadastroCarro onSuccess={handleCadastroSuccess} />
+              <CadastroCarro onSuccess={handleCadastro} />
             </div>
           </Collapse>
           <table className="table" id="tabelaCarros">
@@ -144,6 +148,7 @@ const Carro: React.FC = () => {
                 <th className="text-white pl-2" scope="col">Marca</th>
                 <th className="text-white pl-2" scope="col">Modelo</th>
                 <th className="text-white pl-2" scope="col">Ano</th>
+                <th className="text-white pl-2" scope="col">Placa</th>
                 <th className="text-white pl-2" scope="col">Valor Diária</th>
                 <th className="text-white pl-2" scope="col">Status</th>
                 <th className="text-white pl-2" scope="col">Ações</th>
@@ -158,6 +163,7 @@ const Carro: React.FC = () => {
                     <td>{carro.marca}</td>
                     <td>{carro.modelo}</td>
                     <td>{carro.ano}</td>
+                    <td>{carro.placa}</td>
                     <td>{`R$ ${carro.valorDiaria.toFixed(2)}`}</td>
                     <td>
                       <span className={`status ${statusClass}`}>
@@ -169,7 +175,7 @@ const Carro: React.FC = () => {
                       <DeletarCarro
                         id={carro.id}
                         status={carro.status}
-                        onDeleteSuccess={handleDeleteSuccess}
+                        onDelete={handleDelete}
                       />
                     </td>
                   </tr>

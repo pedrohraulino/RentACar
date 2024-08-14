@@ -63,19 +63,32 @@ namespace SistemaAluguelCarros.Services.Carro
             ResponseModel<List<CarroModel>> resposta = new ResponseModel<List<CarroModel>>();
             try
             {
+                bool placaExiste = await _context.Carro
+                    .AsNoTracking()
+                    .AnyAsync(c => c.Placa == criarCarroDto.Placa);
+
+                if (placaExiste)
+                {
+                    resposta.Mensagem = "Já existe um carro com a placa informada.";
+                    resposta.Status = false;
+                    return resposta;
+                }
+
                 var carro = new CarroModel()
                 {
                     Modelo = criarCarroDto.Modelo,
                     Marca = criarCarroDto.Marca,
                     Ano = criarCarroDto.Ano,
+                    Placa = criarCarroDto.Placa,
                     Status = criarCarroDto.Status,
                     ValorDiaria = criarCarroDto.ValorDiaria
                 };
+
                 _context.Add(carro);
                 await _context.SaveChangesAsync();
 
                 resposta.Dados = await _context.Carro.ToListAsync();
-                resposta.Mensagem = "Autor Criado com Sucesso";
+                resposta.Mensagem = "Carro Criado com Sucesso";
                 return resposta;
             }
             catch (Exception ex)
@@ -85,6 +98,7 @@ namespace SistemaAluguelCarros.Services.Carro
                 return resposta;
             }
         }
+
 
         public async Task<ResponseModel<List<CarroModel>>> EditarCarro(EditarCarroDto editarCarroDto)
         {
@@ -94,28 +108,44 @@ namespace SistemaAluguelCarros.Services.Carro
                 var carro = await _context.Carro.FirstOrDefaultAsync(carroBanco => carroBanco.Id == editarCarroDto.Id);
                 if (carro == null)
                 {
-                    resposta.Mensagem = "Nenhum carro Localizado";
+                    resposta.Mensagem = "Nenhum carro localizado com o ID fornecido.";
+                    resposta.Status = false;
+                    return resposta;
+                }
+
+                bool placaExiste = await _context.Carro
+                    .AsNoTracking()
+                    .AnyAsync(c => c.Placa == editarCarroDto.Placa && c.Id != editarCarroDto.Id);
+
+                if (placaExiste)
+                {
+                    resposta.Mensagem = "Já existe um carro com a placa informada.";
+                    resposta.Status = false;
                     return resposta;
                 }
 
                 carro.Modelo = editarCarroDto.Modelo;
                 carro.Marca = editarCarroDto.Marca;
                 carro.Ano = editarCarroDto.Ano;
+                carro.Placa = editarCarroDto.Placa;
                 carro.Status = editarCarroDto.Status;
                 carro.ValorDiaria = editarCarroDto.ValorDiaria;
+
                 _context.Update(carro);
                 await _context.SaveChangesAsync();
+
                 resposta.Dados = await _context.Carro.ToListAsync();
-                resposta.Mensagem = "Dados Atualizados";
+                resposta.Mensagem = "Dados Atualizados com Sucesso";
                 return resposta;
             }
             catch (Exception ex)
             {
                 resposta.Mensagem = ex.Message;
                 resposta.Status = false;
+                return resposta;
             }
-            return resposta;
         }
+
 
         public async Task<ResponseModel<List<CarroModel>>> RemoverCarro(int carroId)
         {

@@ -131,6 +131,7 @@ const Reservas: React.FC = () => {
             <thead>
               <tr className="bg-dark">
                 <th className="pl-3 text-white" scope="col">Carro</th>
+                <th className="pl-3 text-white" scope="col">Placa</th>
                 <th className="pl-3 text-white" scope="col">Cliente</th>
                 <th className="pl-3 text-white" scope="col">Data Início</th>
                 <th className="pl-3 text-white" scope="col">Data Fim</th>
@@ -142,6 +143,7 @@ const Reservas: React.FC = () => {
               {(busca ? reservasFiltradas : reservasPaginated).map((reserva) => (
                 <tr key={reserva.id}>
                   <td>{reserva.carro.marca} - {reserva.carro.modelo}</td>
+                  <td>{reserva.carro.placa}</td>
                   <td>{reserva.cliente.nome}</td>
                   <td>{new Date(reserva.dataInicio).toLocaleDateString()}</td>
                   <td>{new Date(reserva.dataFim).toLocaleDateString()}</td>
