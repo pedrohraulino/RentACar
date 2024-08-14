@@ -1,4 +1,3 @@
-```markdown
 # Sistema de Reservas de Carros
 
 Este é um sistema completo de reservas de carros, que inclui um frontend desenvolvido com React e um backend em C#. O sistema permite a gestão de clientes, carros e reservas, além de suportar operações de cadastro, edição e exclusão.
